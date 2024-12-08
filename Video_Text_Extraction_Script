@@ -1,4 +1,4 @@
-#This file contains a script where you give it a video file location, and it will go frame-by-frame through the video to find text and document it. This was a trial for a personal project and does not work very well, but was fun to attempt.
+#This file contains a script where you give it a video file location, and it will go frame-by-frame through the video to find text and document it. I ran the script using Fedora Linux. This was a trial for a personal project and does not work very well, but was fun to attempt.
 
 import cv2
 import pytesseract
@@ -49,6 +49,6 @@ def extract_unique_text_from_video(video_path, output_log_file):
     print(f"Extracted text logged to {output_log_file}")
 
 # Usage
-video_path = "/home/aidan/Videos/Video1.mp4"  # Replace with your video file path
+video_path = "/home/"User"/Videos/Video1.mp4"  # Replace with your video file path
 output_log_file = "extracted_text_log.txt"  # Output log file
 extract_unique_text_from_video(video_path, output_log_file)
