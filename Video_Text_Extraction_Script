@@ -1,0 +1,54 @@
+#This file contains a script where you give it a video file location, and it will go frame-by-frame through the video to find text and document it. This was a trial for a personal project and does not work very well, but was fun to attempt.
+
+import cv2
+import pytesseract
+import os
+
+def extract_unique_text_from_video(video_path, output_log_file):
+    # Initialize video capture
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print(f"Error: Cannot open video {video_path}")
+        return
+
+    # Get the total number of frames
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    # Set for storing unique text
+    unique_texts = set()
+    
+    # Frame processing loop
+    frame_count = 0
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Convert frame to grayscale (optional, improves OCR accuracy)
+        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        # Extract text from frame using Tesseract
+        text = pytesseract.image_to_string(gray_frame)
+
+        # Remove duplicates by storing in set
+        if text.strip():  # Only add non-empty text
+            unique_texts.add(text.strip())
+
+        # Display progress
+        frame_count += 1
+        print(f"Processing frame {frame_count} / {total_frames}")
+
+    # Release video capture object
+    cap.release()
+
+    # Write unique text to log file
+    with open(output_log_file, 'w') as log_file:
+        for text in unique_texts:
+            log_file.write(text + "\n")
+
+    print(f"Extracted text logged to {output_log_file}")
+
+# Usage
+video_path = "/home/aidan/Videos/Video1.mp4"  # Replace with your video file path
+output_log_file = "extracted_text_log.txt"  # Output log file
+extract_unique_text_from_video(video_path, output_log_file)
